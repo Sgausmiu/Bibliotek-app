@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.samara.bibliotek.dao.BookDAO;
 import ru.samara.bibliotek.models.Book;
 
 import javax.validation.Valid;
