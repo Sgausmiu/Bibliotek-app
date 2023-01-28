@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Show</title>
 </head>
 <body>
-<p th:text="${book.getAuthor() + ', ' + book.getYearBook() + ', ' + person.getNamed()}">VALUE</p>
+<p th:text="${book.getNamed() + ', ' + book.getAuthor() + ', ' + person.getYearBook()}">VALUE</p>
 <p th:text="${book.getId()}">VALUE</p>
 
-<a th:href="@{/book/{id}/edit(id=${book.getId()})}">Edit</a>
+<form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
+    <input type="submit" value="Edit"/>
+</form>
 
 <form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
     <input type="submit" value="Delete"/>
