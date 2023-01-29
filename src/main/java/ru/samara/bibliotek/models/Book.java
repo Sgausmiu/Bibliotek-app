@@ -16,7 +16,10 @@ public class Book {
     @NotEmpty(message = "Year of the Book should not be empty")
     @Min(value = 1900, message = "Min year for the book")
     private int yearBook;
+    //Конструктор по умолчанию нужен для Spring
+    public Book() {
 
+    }
     public Book(int id, String named, String author, int yearBook){
         this.id=id;
         this.named=named;
