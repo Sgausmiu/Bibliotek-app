@@ -7,34 +7,47 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.samara.bibliotek.dao.BookDAO;
+import ru.samara.bibliotek.dao.PersonDAO;
 import ru.samara.bibliotek.models.Book;
+import ru.samara.bibliotek.models.Person;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/books")
 public class BookController {
 
     private final BookDAO bookDAO;
+    private final PersonDAO personDAO;
 
     @Autowired
-    public BookController(BookDAO bookDAO) {
+    public BookController(BookDAO bookDAO, PersonDAO personDAO) {
         this.bookDAO = bookDAO;
+        this.personDAO = personDAO;
     }
-
+    @GetMapping()
     public String index(Model model){
         model.addAttribute("books", bookDAO.index());
         return "books/index";
     }
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
+    public String show(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
         model.addAttribute("book", bookDAO.show(id));
+
+        Optional<Person> bookOwner = bookDAO.gerBookOwner(id);
+        if (bookOwner.isPresent())
+            model.addAttribute("owner", bookOwner.get());
+        else
+            model.addAttribute("people", personDAO.index());
         return "books/show";
     }
 
-    public String newBook(@ModelAttribute("book") Book book) {
 
+    @GetMapping("/new")
+    public String newBook(@ModelAttribute("book") Book book) {
         return "books/new";
+
     }
     @PostMapping
     public String create (@ModelAttribute("book") @Valid Book book,
@@ -50,7 +63,7 @@ public class BookController {
         return "books/edit";
 
     }
-    @PatchMapping("{id}")
+    @PatchMapping("/{id}")
     public String update (@ModelAttribute("book") @Valid Book book,
                           BindingResult bindingResult,
                            @PathVariable("id") int id) {
@@ -59,11 +72,24 @@ public class BookController {
         bookDAO.update(id, book);
         return "redirect:/books";
     }
+    @PatchMapping("/{id}/tofree")
+    public String tofree(@PathVariable("id") int id){
+        bookDAO.tofree(id);
+        return "redirect:/books"+ id;
+    }
+    @PatchMapping("/{id}/toappoint")
+    public String toappoint(@PathVariable("id") int id, @ModelAttribute("person") Person selectedPerson){
+        bookDAO.toappoint(id, selectedPerson);
+        return "redirect:/books"+ id;
+    }
+
+
     @DeleteMapping("{id}")
     public String delete (@PathVariable("{id}") int id) {
         bookDAO.delete(id);
         return "redirect:/books";
     }
+
 
 }
 

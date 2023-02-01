@@ -5,8 +5,11 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.samara.bibliotek.models.Book;
+import ru.samara.bibliotek.models.Person;
 
 import java.util.List;
+import java.util.Optional;
+
 @Component
 public class BookDAO {
     private final JdbcTemplate jdbcTemplate;
@@ -34,7 +37,21 @@ public class BookDAO {
     public void  delete(int id){
         jdbcTemplate.update("DELETE FROM Book WHERE id=?", id);
     }
+    //Для создания выпадающего списка соединим таблицы Book and Person
+    public Optional<Person> gerBookOwner (int id) {
+        //Выбираем все колонки таблицы Person из объединенной таблицы
+        return jdbcTemplate.query("SELECT Person.* FROM Book JOIN Person ON Book.person_id = Person.id " +
+                "WHERE Book.id = ?", new Object[]{id}, new BeanPropertyRowMapper<>(Person.class))
+                .stream().findAny();
+    }
+    //Освобожждение  книги читателем
+    public void tofree (int id) {
+         jdbcTemplate.update("UPDATE Book SET person_id=NULL WHERE id=?", id);
+    }
 
-
+    //Назначение книги читателю
+    public void toappoint (int id, Person selectedPerson) {
+         jdbcTemplate.update("UPDATE Book SET person_id=? WHERE id=?", selectedPerson.getId(), id);
+    }
 
 }

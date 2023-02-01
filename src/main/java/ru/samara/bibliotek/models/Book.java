@@ -7,13 +7,13 @@ import javax.validation.constraints.Size;
 public class Book {
     private int id;
     @NotEmpty(message = "Should not be empty")
-    @Size(min = 2, max = 100, message = "2<Lenght<100 ")
+    @Size(min = 2, max = 200, message = "2<Lenght<100 ")
     private String named;
 
     @NotEmpty(message = "name authors should not be empty")
-    @Size(min = 2, max = 30, message = "2<Lenght<30 ")
+    @Size(min = 2, max = 130, message = "2<Lenght<30 ")
     private String author;
-    @NotEmpty(message = "Year of the Book should not be empty")
+    //@NotEmpty(message = "Year of the Book should not be empty")
     @Min(value = 1900, message = "Min year for the book")
     private int yearBook;
     //Конструктор по умолчанию нужен для Spring
