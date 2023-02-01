@@ -37,7 +37,7 @@ public class PersonDAO {
     }
     //Валидация уникального ФИО
     public Optional<Person> getPersonByFullName(String fullName){
-        return jdbcTemplate.query("SELECT * FROM Person WHERE full_name=?", new Object[]{fullName},
+        return jdbcTemplate.query("SELECT * FROM Person WHERE fullName=?", new Object[]{fullName},
                 new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
     }
     //Получение человеком книги по его id, без join

@@ -13,24 +13,27 @@ public class BibliotekDispatcherServletInitializer extends AbstractAnnotationCon
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
+
         return null;
     }
 
     @Override
-    protected Class<?>[] getServletConfigClasses() {
-        return new Class[0];
+    protected Class<?>[] getServletConfigClasses()
+    {
+        return new Class[]{BibliotekSpringConfig.class};
     }
 
     @Override
     protected String[] getServletMappings() {
-        return new String[0];
+
+        return new String[]{"/"};
     }
 
     @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        super.onStartup(servletContext);
-        registerHiddenFieldFilter(servletContext);
-        registerCharacterEncodingFilter(servletContext);
+    public void onStartup(ServletContext aServletContext) throws ServletException {
+        super.onStartup(aServletContext);
+        registerHiddenFieldFilter(aServletContext);
+        registerCharacterEncodingFilter(aServletContext);
     }
 
     private void registerHiddenFieldFilter (ServletContext Context) {
