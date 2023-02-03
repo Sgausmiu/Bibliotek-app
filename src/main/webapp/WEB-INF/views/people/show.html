@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<p th:text="${person.getFullName() + ', ' + person.getYearBirth}">VALUE</p>
+<p th:text="${person.getFullName() + ', ' + person.getYearBirth()}">VALUE</p>
 
 <div th:if="${books.isEmpty()}">
     <p>Человек пока не взял ни одной книги</p>

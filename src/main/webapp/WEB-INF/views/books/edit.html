@@ -2,13 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>book</title>
+    <title>Update book</title>
 </head>
 <body>
+
 <form th:method="PATCH" th:action="@{/books/{id}(id=${book.getId()})}" th:object="${book}">
     <label for="named">Введите название книги: </label>
     <input type="text" th:field="*{named}" id="named"/>
-    <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{named}">named Error</div>
+    <div style="color:red" th:if="${#fields.hasErrors('named')}" th:errors="*{named}">Title Error</div>
     <br/>
     <label for="author">Введите автора: </label>
     <input type="text" th:field="*{author}" id="author"/>

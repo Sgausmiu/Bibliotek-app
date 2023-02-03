@@ -35,8 +35,14 @@ public class PersonController {
 
         return "people/show";
     }
+
+    @GetMapping("/new")
+    public String newPerson(@ModelAttribute("person") Person person) {
+
+        return "people/new";
+    }
     @PostMapping()
-    public String create(@ModelAttribute("persion") @Valid Person person,
+    public String create(@ModelAttribute("person") @Valid Person person,
                          BindingResult bindingResult) {
         personValidator.validate(person, bindingResult);
         if (bindingResult.hasErrors())
@@ -44,10 +50,6 @@ public class PersonController {
 
         personDAO.save(person);
         return "redirect:/people";
-    }
-    @GetMapping("/new")
-    public String newPerson(@ModelAttribute("person") Person person) {
-        return "people/new";
     }
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {

@@ -10,7 +10,7 @@ public class Person {
 
     }
     public Person(int id, String fullName, int yearBirth){
-        this.id=id;
+        this.id = id;
         this.fullName=fullName;
         this.yearBirth=yearBirth;
     }

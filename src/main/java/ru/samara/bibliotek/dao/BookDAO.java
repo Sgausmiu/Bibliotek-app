@@ -23,7 +23,7 @@ public class BookDAO {
     }
 
     public Book show(int id) {
-        return jdbcTemplate.query("SELECT * FROM Book WHERE id=?", new BeanPropertyRowMapper<>(Book.class))
+        return jdbcTemplate.query("SELECT * FROM Book WHERE id=?", new Object[]{id}, new BeanPropertyRowMapper<>(Book.class))
                 .stream().findAny().orElse(null);
     }
 
@@ -38,7 +38,7 @@ public class BookDAO {
         jdbcTemplate.update("DELETE FROM Book WHERE id=?", id);
     }
     //Для создания выпадающего списка соединим таблицы Book and Person
-    public Optional<Person> gerBookOwner (int id) {
+    public Optional<Person> getBookOwner(int id) {
         //Выбираем все колонки таблицы Person из объединенной таблицы
         return jdbcTemplate.query("SELECT Person.* FROM Book JOIN Person ON Book.person_id = Person.id " +
                 "WHERE Book.id = ?", new Object[]{id}, new BeanPropertyRowMapper<>(Person.class))

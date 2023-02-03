@@ -1,7 +1,6 @@
 package ru.samara.bibliotek.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,7 +34,8 @@ public class BookController {
     public String show(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
         model.addAttribute("book", bookDAO.show(id));
 
-        Optional<Person> bookOwner = bookDAO.gerBookOwner(id);
+        Optional<Person> bookOwner = bookDAO.getBookOwner(id);
+
         if (bookOwner.isPresent())
             model.addAttribute("owner", bookOwner.get());
         else
@@ -72,23 +72,25 @@ public class BookController {
         bookDAO.update(id, book);
         return "redirect:/books";
     }
+
+    @DeleteMapping("/{id}")
+    public String delete (@PathVariable("id") int id) {
+        bookDAO.delete(id);
+        return "redirect:/books";
+    }
     @PatchMapping("/{id}/tofree")
     public String tofree(@PathVariable("id") int id){
         bookDAO.tofree(id);
-        return "redirect:/books"+ id;
+        return "redirect:/books/"+ id;
     }
     @PatchMapping("/{id}/toappoint")
     public String toappoint(@PathVariable("id") int id, @ModelAttribute("person") Person selectedPerson){
         bookDAO.toappoint(id, selectedPerson);
-        return "redirect:/books"+ id;
+        return "redirect:/books/"+ id;
     }
 
 
-    @DeleteMapping("{id}")
-    public String delete (@PathVariable("{id}") int id) {
-        bookDAO.delete(id);
-        return "redirect:/books";
-    }
+
 
 
 }
